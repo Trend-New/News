@@ -76,6 +76,16 @@ img{max-width:100%;display:block}
 .footer-grid a:hover{color:#fff}
 .copyright{text-align:center;color:#6b7280;font-size:12px;margin-top:30px;border-top:1px solid #2a2f3a;padding-top:16px}
 @media(max-width:860px){.navbar ul{display:none;flex-direction:column;width:100%}.navbar ul.open{display:flex}.navbar a{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.1)}.menu-toggle{display:block;width:100%}.lead-story{grid-template-columns:1fr}.lead-img{height:280px}.content-wrap{flex-direction:column}.side-col{min-width:unset}}
+
+/* 1. Ad Slot Styling (CSS) - Ensures organized placement and centering */
+.ad-slot {
+    display: flex;
+    justify-content: center;
+    margin: 25px auto;
+    min-height: 1050px;
+    width: 100%;
+    overflow: hidden;
+}
 </style>
 </head>
 <body>
@@ -103,6 +113,9 @@ img{max-width:100%;display:block}
   <li><a href="/live-reports">Live Reports</a></li>
  </ul>
 </nav>
+
+<!-- Banner Ad 1 - CONTAINER (Top of the page, loads immediately) -->
+<div id="banner-container-1" class="ad-slot"></div>
 
 <div class="wrap">
  <div class="lead-story">
@@ -160,6 +173,9 @@ img{max-width:100%;display:block}
     </a>
    </article>
 
+   <!-- Banner Ad 2 - CONTAINER (Middle of main column, scrolls triggered) -->
+   <div id="banner-container-2" class="ad-slot"></div>
+
    <article class="post-card">
     <a href="#">
      <div class="post-thumb">
@@ -176,6 +192,9 @@ img{max-width:100%;display:block}
   <div style="text-align:center;margin:24px 0">
    <a href="#" style="font-family:Arial;font-weight:700;color:#fff;background:var(--ink);padding:10px 22px;border-radius:3px;display:inline-block;transition:.2s">Older Stories</a>
   </div>
+
+  <!-- Banner Ad 3 - CONTAINER (Bottom of main column, scrolls triggered) -->
+  <div id="banner-container-3" class="ad-slot"></div>
  </main>
 
  <aside class="side-col">
@@ -204,6 +223,9 @@ img{max-width:100%;display:block}
     <span class="label-size"><a class="label-name" href="/politics">Politics</a></span>
    </div>
   </div>
+
+  <!-- Banner Ad 4 - CONTAINER (Sidebar bottom, scrolls triggered) -->
+  <div id="banner-container-4" class="ad-slot"></div>
  </aside>
 </div>
 
@@ -231,7 +253,9 @@ img{max-width:100%;display:block}
  <div class="copyright">&#169; GlobalWire &#8212; All stories verified prior to publication.</div>
 </footer>
 
+<!-- 2. Smart Ad Manager (JavaScript) & Navigation logic -->
 <script>
+// Main responsive mobile menu logic
 document.addEventListener('DOMContentLoaded', function() {
   var toggleBtn = document.getElementById('menuToggle');
   var navMenu = document.getElementById('navMenu');
@@ -242,6 +266,52 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Flagging system to prevent duplicate ads and ensure smooth loading
+window.adFlags = { b1: false, b2: false, b3: false, b4: false, popUnder: false };
+
+// Function to inject ads into their designated containers
+function injectAd(containerId, adHTML) {
+    const container = document.getElementById(containerId);
+    if (container) { container.innerHTML = adHTML; }
+}
+
+// Trigger the first banner immediately on page load
+injectAd('banner-container-1', '<ins style="display:inline-block;width:300px;height:1050px" class="v372c6e8651" data-domain="//data527.click" data-affquery="/906aadc4ea1b78eac7bb/372c6e8651/?placementName=default"><script src="//data527.click/js/responsive.js" async><\/script><\/ins>');
+
+// Trigger subsequent ads and pop-unders based on user scrolling
+window.addEventListener('scroll', () => {
+    const scroll = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+
+    // Banners load based on scrolling progress
+    if (scroll > 0.25 && !window.adFlags.b2) {
+        window.adFlags.b2 = true;
+        injectAd('banner-container-2', '<ins style="display:inline-block;width:300px;height:1050px" class="cca244ab96d" data-domain="//data527.click" data-affquery="/906aadc4ea1b78eac7bb/ca244ab96d/?placementName=2"><script src="//data527.click/js/responsive.js" async><\/script><\/ins>');
+    }
+    if (scroll > 0.50 && !window.adFlags.b3) {
+        window.adFlags.b3 = true;
+        injectAd('banner-container-3', '<ins style="display:inline-block;width:300px;height:1050px" class="td010d9fbd5" data-domain="//data527.click" data-affquery="/906aadc4ea1b78eac7bb/d010d9fbd5/?placementName=3"><script src="//data527.click/js/responsive.js" async><\/script><\/ins>');
+    }
+    if (scroll > 0.75 && !window.adFlags.b4) {
+        window.adFlags.b4 = true;
+        injectAd('banner-container-4', '<ins style="display:inline-block;width:300px;height:1050px" class="y747e2e1e73" data-domain="//data527.click" data-affquery="/906aadc4ea1b78eac7bb/747e2e1e73/?placementName=4"><script src="//data527.click/js/responsive.js" async><\/script><\/ins>');
+    }
+
+    // Pop-under triggers on the first scroll action
+    if (!window.adFlags.popUnder) {
+        window.adFlags.popUnder = true;
+        const script = document.createElement('script');
+        script.src = "//data527.click/394022a4415546a301de/1f8198af1c/?placementName=1";
+        document.body.appendChild(script);
+    }
+});
+
+// Time-based pop-up trigger (20 seconds after page load)
+setTimeout(() => {
+    const script = document.createElement('script');
+    script.src = "//data527.click/e31597fecb27d40d3e23/74f935d1cc/?placementName=1";
+    document.body.appendChild(script);
+}, 20000);
 </script>
 
 </body>
